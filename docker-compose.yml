@@ -1,0 +1,62 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TARGET_ENV: prod
+        VERSION: latest
+    image: primes-client:latest
+    restart: unless-stopped
+    environment:
+      - API_SERVER_HOST=0.0.0.0
+      - API_SERVER_PORT=8000
+      - API_WORKERS=1
+    env_file:
+      - .env.docker
+    networks:
+      - primes-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  locust:
+    image: primes-client:latest
+    restart: unless-stopped
+    entrypoint: ["/venv/bin/locust"]
+    command: ["-f", "src/primes/locustfile.py", "--host=http://api:8000"]
+    env_file:
+      - .env.docker
+    environment:
+      - LOCUST_MODE=standalone
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - primes-network
+    ports:
+      - "8089:8089"
+
+  client:
+    image: primes-client:latest
+    restart: unless-stopped
+    entrypoint: ["/venv/bin/primes-client"]
+    env_file:
+      - .env.docker
+    environment:
+      - SERVICE_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - primes-network
+
+networks:
+  primes-network:
+    driver: bridge
+
+volumes:
+  deps-cache:

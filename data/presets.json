@@ -1,0 +1,44 @@
+[
+  {
+    "id": "preset-smoke-linear",
+    "name": "Smoke Test - Linear Ramp - 20 RPS",
+    "config": {
+      "test_type": "linear",
+      "duration_seconds": 60,
+      "spawn_rate": 5,
+      "user_count": 2,
+      "num_requests": null,
+      "target_rps": 20,
+      "distribution": null
+    }
+  },
+  {
+    "id": "preset-fixed-batch",
+    "name": "Fixed Batch - 500 Requests",
+    "config": {
+      "test_type": "constant",
+      "duration_seconds": null,
+      "spawn_rate": 10,
+      "user_count": 5,
+      "num_requests": 500,
+      "target_rps": null,
+      "distribution": null
+    }
+  },
+  {
+    "id": "preset-steady-distribution",
+    "name": "Steady RPS - Constant Distribution",
+    "config": {
+      "test_type": "distribution",
+      "duration_seconds": 120,
+      "spawn_rate": 10,
+      "user_count": 5,
+      "num_requests": null,
+      "target_rps": 25,
+      "distribution": {
+        "name": "constant",
+        "config": {}
+      }
+    }
+  }
+]

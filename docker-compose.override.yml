@@ -1,0 +1,26 @@
+# Docker Compose Override for Development
+# This file is automatically loaded by docker-compose and overrides docker-compose.yml
+# DO NOT commit to git (add to .gitignore)
+
+services:
+  api:
+    # Mount source directory for hot-reload in development
+    volumes:
+      - ./src:/app/src
+    # Use --reload flag for development
+    command: ["primes.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    # Expose API port for local development access
+    ports:
+      - "8000:8000"
+
+  locust:
+    # Mount source directory for hot-reload
+    volumes:
+      - ./src:/app/src
+
+  client:
+    # Mount source directory for hot-reload
+    volumes:
+      - ./src:/app/src
+    # For development, client doesn't need to run continuously
+    # Use: docker compose run --rm client for one-off commands
