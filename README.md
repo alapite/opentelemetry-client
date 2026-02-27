@@ -1,4 +1,7 @@
 # Load-Testing Client
+
+[![Python application](https://github.com/alapite/opentelemetry-client/actions/workflows/python-app.yml/badge.svg)](https://github.com/alapite/opentelemetry-client/actions/workflows/python-app.yml)
+
 This project contains code for generating OpenTelemetry-instrumented load tests
 for a backend which has also been instrumented with OpenTelemetry. The intention 
 is to be able to generate tests with a variety of load profiles, from constant to
